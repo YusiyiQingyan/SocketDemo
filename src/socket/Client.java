@@ -9,6 +9,7 @@ import java.net.Socket;
 
 public class Client {
     public static void main(String[] args) {
+        final String QUIT = "quit";
         final String DEFAULT_SERVER_HOST = "127.0.0.1";
         final int DEFAULT_SERVER_PORT = 8888;
         Socket socket = null;
@@ -27,14 +28,20 @@ public class Client {
             BufferedReader consoleReader = new BufferedReader(
                     new InputStreamReader(System.in)
             );
-            String input = consoleReader.readLine();
-            //发送消息到服务器
-            writer.write(input + "\n");
-            writer.flush();
-            //读取服务端返回的消息
-            // 读取服务器返回的消息
-            String msg = reader.readLine();
-            System.out.println(msg);
+            while (true) {
+                String input = consoleReader.readLine();
+                //发送消息到服务器
+                writer.write(input + "\n");
+                writer.flush();
+                //读取服务端返回的消息
+                // 读取服务器返回的消息
+                String msg = reader.readLine();
+                System.out.println(msg);
+                //判断用户是否输入退出程序指令
+                if (QUIT.equalsIgnoreCase(input)) {
+                    break;
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
